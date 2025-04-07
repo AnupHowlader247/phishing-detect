@@ -17,6 +17,19 @@ class URLFeatures(BaseModel):
 
 app = FastAPI()
 
+# Allow requests from your Vercel frontend
+origins = [
+    "https://phishing-detect-frontend.vercel.app",  # Your frontend domain
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # or ["*"] for all origins (not recommended for production)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/predict")
 def predict(features: URLFeatures):
     input_data = np.array([[
